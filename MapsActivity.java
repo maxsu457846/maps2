@@ -1,11 +1,12 @@
-package com.example.a1102map;
+om.example.a1102map;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-
+import android.util.Log;
 
 import android.os.Bundle;
 
@@ -15,6 +16,19 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
+import com.utsman.samplegooglemapsdirection.R;
+import com.utsman.samplegooglemapsdirection.java.model.DirectionResponses;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -40,13 +54,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    @SuppressLint("Registered")
+    public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+        private GoogleMap map;
+        private LatLng fkip;
+        private LatLng monas;
+
+
+
+        @Override
+    public void onMapReady(GoogleMap googleMap) {
+            map = googleMap;
+
+            MarkerOptions markerFkip = new MarkerOptions()
+                    .position(fkip)
+                    .title("FKIP");
+            MarkerOptions markerMonas = new MarkerOptions()
+                    .position(monas)
+                    .title("Monas");
+
+            map.addMarker(markerFkip);
+            map.addMarker(markerMonas);
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(monas, 11.6f));
+
+
+            String fromFKIP = String.valueOf(fkip.latitude) + "," + String.valueOf(fkip.longitude);
+            String toMonas = String.valueOf(monas.latitude) + "," + String.valueOf(monas.longitude);
+
+            ApiServices apiServices = RetrofitClient.apiServices(this);
+
+
+
+
+
     }
 }
